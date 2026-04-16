@@ -1,0 +1,609 @@
+================================================================================
+     HEALTHCARE PAYMENT INTEGRITY - DATA ANALYST GROUP DISCUSSION
+     COMBINED CASE STUDY: HOSPITAL BILLING & PHARMACY DATA
+     TOTAL QUESTIONS: 20
+================================================================================
+
+
+--------------------------------------------------------------------------------
+QUESTION 1: THE ICE BREAKER
+--------------------------------------------------------------------------------
+
+"Have any of you or your family ever visited a hospital and later felt 
+the bill was too high or had errors?"
+
+POSSIBLE ANSWERS:
+- Duplicate charges for same test
+- Charged for medicines not received
+- Different amounts in bill vs insurance claim
+- Consultation fee charged multiple times
+- Pharmacy billing inflated prices for basic medicines
+- Charged for room upgrade that was not requested
+- Lab tests repeated unnecessarily
+
+WHAT TO OBSERVE: Confidence, real-world awareness, willingness to speak first
+
+
+--------------------------------------------------------------------------------
+QUESTION 2: DOMAIN UNDERSTANDING
+--------------------------------------------------------------------------------
+
+"What do you think 'Payment Integrity' means in healthcare? Why would 
+a hospital or insurance company need it?"
+
+POSSIBLE ANSWERS:
+- BEST: Ensuring every rupee paid by insurance is accurate, justified, 
+  and free from fraud/waste/abuse
+- Preventing hospitals from overbilling
+- Catching duplicate or fake claims
+- Making sure patients get what they are billed for
+- Reducing unnecessary costs in the healthcare system
+- Protecting both insurance companies AND patients
+- Ensuring compliance with government regulations
+- Maintaining trust between providers and payers
+
+WHAT TO OBSERVE: Understanding of bigger picture, not just textbook definitions
+
+
+--------------------------------------------------------------------------------
+QUESTION 3: DATA IDENTIFICATION - HOSPITAL SIDE
+--------------------------------------------------------------------------------
+
+"When a patient visits a hospital and the bill goes to an insurance 
+company, what all data gets generated in this entire journey?"
+
+POSSIBLE ANSWERS:
+
+Patient Data:
+- Name, age, gender, policy number, Aadhaar, medical history
+
+Hospital Data:
+- Hospital name, registration ID, location, department
+
+Doctor Data:
+- Doctor name, specialization, license number
+
+Clinical Data:
+- Diagnosis (ICD codes), procedures (CPT codes), lab tests, 
+  medicines prescribed
+
+Billing Data:
+- Itemized charges, total amount, insurance vs out-of-pocket split
+
+Claim Data:
+- Claim ID, submission date, approval/rejection status, 
+  reason for rejection
+
+Timing Data:
+- Admission date, discharge date, length of stay
+
+WHAT TO OBSERVE: How exhaustive their thinking is - do they think beyond 
+just "name and bill amount"?
+
+
+--------------------------------------------------------------------------------
+QUESTION 4: DATA IDENTIFICATION - PHARMACY SIDE
+--------------------------------------------------------------------------------
+
+"Now think about Apollo Pharmacy or MedPlus. Every time you buy 
+medicine, what data do they collect?"
+
+POSSIBLE ANSWERS:
+
+Customer:
+- Name, phone number, loyalty card ID, age, purchase history
+
+Medicine:
+- Drug name, brand vs generic, dosage, quantity, batch number, 
+  expiry date
+
+Prescription:
+- Doctor name, hospital, prescription date, refill frequency
+
+Transaction:
+- Amount paid, discount applied, payment method, date/time, 
+  store location
+
+Insurance:
+- If claimed - policy number, amount reimbursed
+
+BONUS ANSWER: 
+- Whether it is OTC (over the counter) or prescription-only drug
+
+WHAT TO OBSERVE: Do they think from multiple angles - customer, product, 
+transaction, compliance?
+
+
+--------------------------------------------------------------------------------
+QUESTION 5: DATA CONNECTION THINKING
+--------------------------------------------------------------------------------
+
+"If we combine hospital data and pharmacy data together, what common 
+fields or keys can connect these two datasets?"
+
+POSSIBLE ANSWERS:
+- Patient ID / Aadhaar number / Phone number
+- Doctor name / Doctor registration number
+- Medicine name prescribed in hospital vs purchased at pharmacy
+- Diagnosis code linked to medicine type
+- Date of hospital visit vs date of pharmacy purchase
+- Insurance policy number used in both systems
+- Hospital location vs pharmacy location (proximity check)
+- Prescription ID as a linking key
+
+BONUS THINKING:
+- If no common key exists, fuzzy matching on name + date + location
+- Need for a Master Patient Index (MPI) to unify records
+
+WHAT TO OBSERVE: Can they think about data relationships and joins?
+
+
+--------------------------------------------------------------------------------
+QUESTION 6: STORAGE AND TOOLS
+--------------------------------------------------------------------------------
+
+"A large insurance company processes 10 million claims per year and a 
+pharmacy chain handles 50 lakh transactions per month. Where and how 
+would they store all this data?"
+
+POSSIBLE ANSWERS:
+
+Storage:
+- Cloud platforms - AWS (S3, Redshift), Azure (Synapse), GCP (BigQuery)
+- On-premise data warehouses
+- Data lakes for raw/unstructured data
+- Relational databases (MySQL, PostgreSQL, SQL Server)
+
+Key Considerations:
+- HIPAA compliance (health data privacy)
+- India's DPDP Act (Data Protection)
+- Encryption for sensitive patient data
+- Backup and disaster recovery
+- Data partitioning for fast querying
+
+Tools:
+- SQL for querying
+- Python/R for analysis
+- Tableau/Power BI for dashboards
+- ETL tools (Informatica, Talend, SSIS)
+- Excel for quick analysis
+
+WHAT TO OBSERVE: Do they just say "cloud" or can they name specific 
+platforms and explain WHY?
+
+
+--------------------------------------------------------------------------------
+QUESTION 7: INSIGHT GENERATION
+--------------------------------------------------------------------------------
+
+"If I give you 1 year of hospital claims data AND pharmacy purchase 
+data combined, what are the top 5 insights or patterns you would 
+look for?"
+
+POSSIBLE ANSWERS:
+
+1. Duplicate claims - Same patient, same procedure, same date, 
+   different claim IDs (Direct fraud detection)
+
+2. Doctor-pharmacy nexus - One doctor always prescribing expensive 
+   branded drugs from one specific pharmacy (Kickback fraud)
+
+3. Billing vs market rate - Hospital charging Rs.5000 for a test 
+   that costs Rs.500 everywhere else (Overbilling detection)
+
+4. Ghost patients - Claims for patients who never visited, 
+   cross-check admission records vs pharmacy purchases (Fake claims)
+
+5. Chronic patient patterns - Patients buying diabetes medicine 
+   monthly but hospital claims show surgery every quarter 
+   (Inconsistency = red flag)
+
+6. Seasonal spikes - Sudden increase in dengue claims in a 
+   non-monsoon month in a specific hospital (Potential fabrication)
+
+7. Prescription without diagnosis - Pharmacy shows expensive drug 
+   purchase but no corresponding hospital diagnosis (Data mismatch)
+
+WHAT TO OBSERVE: Creativity and depth - do they think like a detective 
+or just a report generator?
+
+
+--------------------------------------------------------------------------------
+QUESTION 8: FRAUD SCENARIO - CRITICAL THINKING
+--------------------------------------------------------------------------------
+
+"A hospital in a small town submits 500 knee replacement surgery 
+claims in one month. The national average for a hospital that size 
+is 20 per month. Is this definitely fraud? How would you investigate?"
+
+POSSIBLE ANSWERS:
+
+NOT necessarily fraud - could be legitimate if:
+- Hospital is a specialty orthopedic center
+- They ran a free/subsidized surgery camp
+- They are the only hospital in a large rural area
+- Renowned surgeon joined recently attracting patients
+
+Investigation steps:
+- Compare with previous months - sudden spike or gradual growth?
+- Check patient demographics - all from same area or suspiciously 
+  spread across states?
+- Verify patient identities - Aadhaar/ID cross-check
+- Check if same patients had knee replacement claimed before 
+  (you cannot replace the same knee twice!)
+- Look at average cost per surgery vs national benchmark
+- Check doctor-to-surgery ratio - can 2 doctors physically do 
+  500 surgeries in 30 days?
+- Cross-reference pharmacy data - were post-surgery medicines 
+  purchased?
+- Check if patients had pre-surgery tests done (X-ray, blood work)
+
+WHAT TO OBSERVE: Do they jump to "ITS FRAUD!" or think critically 
+and consider both sides?
+
+
+--------------------------------------------------------------------------------
+QUESTION 9: DATA QUALITY CHALLENGE
+--------------------------------------------------------------------------------
+
+"In real life, data is never clean. What problems do you think you 
+would face when working with hospital billing and pharmacy data?"
+
+POSSIBLE ANSWERS:
+
+Problems:
+- Missing values - Patient phone number missing, doctor ID blank
+- Inconsistent formats - Date as DD/MM/YYYY in one system, 
+  MM-DD-YYYY in another
+- Duplicate records - Same patient with slightly different names 
+  (Rahul Kumar vs Kumar Rahul)
+- Incorrect codes - Wrong ICD/CPT codes entered by hospital staff
+- Delayed data - Claims submitted months after treatment
+- Unstructured data - Doctors handwritten notes, scanned prescriptions
+- Data silos - Hospital data in one system, pharmacy in another, 
+  no common patient ID
+- Privacy restrictions - Cannot access certain fields due to compliance
+- Spelling errors in medicine names or hospital names
+- Currency/amount inconsistencies
+
+How to handle:
+- Data cleaning scripts (Python - Pandas)
+- Fuzzy matching for duplicate names
+- Standardization rules
+- Master Data Management (MDM)
+- Data validation checks before analysis
+- Regular data audits
+
+WHAT TO OBSERVE: Real-world readiness - do they understand data is messy?
+
+
+--------------------------------------------------------------------------------
+QUESTION 10: SQL SCENARIO
+--------------------------------------------------------------------------------
+
+"I have a table called CLAIMS with columns: claim_id, patient_id, 
+hospital_id, procedure_code, claim_amount, claim_date, status. 
+How would you write a query to find hospitals that submitted more 
+than 100 claims in a single day?"
+
+POSSIBLE ANSWERS:
+
+Basic correct answer:
+SELECT hospital_id, claim_date, COUNT(*) as claim_count
+FROM CLAIMS
+GROUP BY hospital_id, claim_date
+HAVING COUNT(*) > 100
+ORDER BY claim_count DESC;
+
+Better answer adds:
+- JOIN with hospital master table to get hospital name and location
+- Filter by status = 'APPROVED' or 'PENDING'
+- Add date range filter for specific analysis period
+- Compare against average daily claims for that hospital
+
+BONUS if they mention:
+- Creating a view or temp table for reuse
+- Adding percentage above average calculation
+- Window functions for trend analysis
+
+WHAT TO OBSERVE: SQL fundamentals, logical thinking, ability to 
+go beyond basic query
+
+
+--------------------------------------------------------------------------------
+QUESTION 11: PHARMACY FRAUD PATTERN
+--------------------------------------------------------------------------------
+
+"A pharmacy is billing insurance companies for 1000 units of an 
+expensive cancer drug every month, but the pharmacy is located in 
+a small village with population of 5000. What questions would you 
+ask and what data would you check?"
+
+POSSIBLE ANSWERS:
+
+Questions to ask:
+- Is there a cancer hospital or treatment center nearby?
+- Does the pharmacy supply to multiple hospitals in the region?
+- What is the normal demand for this drug in similar areas?
+- Are the prescriptions coming from verified oncologists?
+- Are the patients real and verified?
+
+Data to check:
+- Patient addresses - are they local or from far away places?
+- Prescribing doctor credentials - are they real oncologists?
+- Compare with other pharmacies in similar sized towns
+- Check if same patients are buying from multiple pharmacies
+- Verify if the drug manufacturer shipped that quantity to this pharmacy
+- Supply chain data - purchase orders vs sales vs insurance claims
+- Check if the drug requires cold storage - does pharmacy have it?
+
+Red flags:
+- Patient IDs that dont exist in any hospital records
+- All prescriptions from one or two doctors only
+- Billing amount significantly higher than MRP
+- No corresponding hospital treatment claims for these cancer patients
+
+WHAT TO OBSERVE: Investigative mindset, ability to connect dots across 
+multiple data sources
+
+
+--------------------------------------------------------------------------------
+QUESTION 12: STATISTICAL THINKING
+--------------------------------------------------------------------------------
+
+"If the average hospital claim amount in Chennai is Rs.25,000 and 
+one hospital consistently submits claims averaging Rs.75,000, what 
+statistical methods would you use to determine if this is an outlier 
+or genuinely different?"
+
+POSSIBLE ANSWERS:
+
+Basic methods:
+- Z-score calculation - how many standard deviations from mean
+- IQR method (Interquartile Range) - Q1, Q3, identify outliers
+- Box plot visualization to see distribution
+
+Better answers:
+- Compare within same hospital category (multi-specialty vs single)
+- Compare within same procedure types (not overall average)
+- Use percentile ranking - where does this hospital fall?
+- T-test or Mann-Whitney test to check statistical significance
+- Look at the distribution - is it normal or skewed?
+
+Advanced answers:
+- Regression analysis controlling for hospital size, specialization, 
+  patient severity
+- Clustering hospitals into peer groups first, then compare
+- Time series analysis - has it always been high or sudden change?
+- Benford's Law analysis on claim amounts for digit pattern fraud
+
+Context they should consider:
+- Hospital might be a premium/corporate hospital (legitimately higher)
+- Case mix might be different (more complex surgeries)
+- Location cost differences within the same city
+
+WHAT TO OBSERVE: Statistical knowledge depth, ability to think beyond 
+simple average comparison
+
+
+--------------------------------------------------------------------------------
+QUESTION 13: REAL-TIME SCENARIO
+--------------------------------------------------------------------------------
+
+"Right now, most fraud is detected AFTER payment is made. If you 
+were asked to build a system that detects fraud BEFORE payment, 
+what would you design?"
+
+POSSIBLE ANSWERS:
+
+System components:
+- Rule-based engine for known fraud patterns
+  * Duplicate claim check
+  * Amount exceeds threshold for procedure
+  * Provider not registered/blacklisted
+  * Patient already has active claim elsewhere
+
+- Machine Learning model for unknown patterns
+  * Trained on historical fraud cases
+  * Anomaly detection for unusual patterns
+  * Risk scoring for each claim (0-100)
+
+- Real-time data checks
+  * Verify patient identity instantly (Aadhaar API)
+  * Check provider license status
+  * Cross-reference with pharmacy data
+  * Geo-location verification
+
+- Workflow
+  * Low risk (score 0-30) -> Auto approve
+  * Medium risk (score 31-70) -> Flag for review
+  * High risk (score 71-100) -> Hold payment, investigate
+
+- Feedback loop
+  * Investigators confirm or dismiss flags
+  * Model retrains with new confirmed fraud cases
+  * Rules updated based on new patterns
+
+WHAT TO OBSERVE: System thinking, understanding of ML basics, 
+practical implementation awareness
+
+
+--------------------------------------------------------------------------------
+QUESTION 14: CROSS-REFERENCING DATA
+--------------------------------------------------------------------------------
+
+"A patient claims they were admitted to Hospital A in Mumbai for 
+5 days. How would you use OTHER data sources (not just hospital data) 
+to verify if this is true?"
+
+POSSIBLE ANSWERS:
+
+Data sources to cross-reference:
+- Pharmacy data - Did they buy post-discharge medicines nearby?
+- Mobile phone location data - Was their phone in Mumbai those 5 days?
+- Bank/payment data - Any transactions in Mumbai during that period?
+- Employer records - Were they marked absent from work?
+- Aadhaar authentication logs - Any biometric verification at hospital?
+- Ambulance records - If emergency, was ambulance called?
+- Lab/diagnostic center records - Pre-admission tests done?
+- Follow-up appointment records - Did they visit for post-care?
+- Insurance app/portal login location
+- Social media activity (extreme case) - Were they posting from 
+  a different city?
+
+Privacy considerations they should mention:
+- Cannot access all data without consent
+- Legal limitations on phone tracking
+- HIPAA/DPDP compliance requirements
+- Need proper authorization for cross-referencing
+
+WHAT TO OBSERVE: Creative thinking about data sources, awareness of 
+privacy and ethical boundaries
+
+
+--------------------------------------------------------------------------------
+QUESTION 15: DASHBOARD DESIGN
+--------------------------------------------------------------------------------
+
+"Your manager says: Build me ONE dashboard that shows the health of 
+our payment integrity system. What 5-6 KPIs/metrics would you put 
+on it?"
+
+POSSIBLE ANSWERS:
+
+Key Metrics:
+1. Total Claims Processed vs Flagged (Overall fraud detection rate)
+2. Top 10 Hospitals by Rejection Rate (Most suspicious hospitals)
+3. Average Claim Amount by Procedure vs Benchmark (Overbilling detection)
+4. Duplicate Claim Count - Monthly Trend (Is fraud increasing or decreasing?)
+5. Recovery Amount - Rs saved from fraud detection (Business impact/ROI)
+6. Doctor-Pharmacy Referral Concentration (Unusual prescription patterns)
+7. Claim Processing Time - submission to approval (Operational efficiency)
+8. Geographic Heatmap (Which regions have highest fraud density)
+
+Dashboard design considerations:
+- Filters by date range, region, hospital type, claim type
+- Drill-down capability (click on hospital to see details)
+- Color coding - Red/Yellow/Green for risk levels
+- Comparison view - This month vs last month vs last year
+- Alert section for new high-risk patterns detected
+
+Tools:
+- Tableau / Power BI for interactive dashboards
+- Python (Matplotlib, Plotly) for custom visualizations
+- Excel for quick ad-hoc analysis
+
+WHAT TO OBSERVE: Business thinking - do they pick metrics that matter 
+or just random charts?
+
+
+--------------------------------------------------------------------------------
+QUESTION 16: ETHICAL DILEMMA
+--------------------------------------------------------------------------------
+
+"During your analysis, you find that a very reputed hospital (which 
+brings 30% of business to your insurance company) is consistently 
+involved in upcoding - billing for expensive procedures when simpler 
+ones were done. What would you do?"
+
+POSSIBLE ANSWERS:
+
+What they SHOULD say:
+- Report findings objectively with data evidence
+- Present facts without bias regardless of business relationship
+- Document everything thoroughly
+- Escalate to compliance/legal team
+- Let leadership make the business decision
+- Suggest a meeting with the hospital to discuss findings
+- Recommend audit of specific claim categories
+
+Nuanced thinking (bonus):
+- Could be unintentional - staff training issue, not deliberate fraud
+- Suggest phased approach - warn first, monitor, then act
+- Calculate financial impact to quantify the problem
+- Compare with industry benchmarks to strengthen the case
+- Recommend automated coding checks to prevent future issues
+- Consider patient impact - are patients being harmed?
+
+Red flag answers:
+- "Ignore it because they bring business" (WRONG)
+- "Directly go to media" (WRONG - no internal process followed)
+- "Confront the hospital directly" (WRONG - not their role)
+
+WHAT TO OBSERVE: Integrity, professionalism, understanding of 
+organizational hierarchy, ethical compass
+
+
+--------------------------------------------------------------------------------
+QUESTION 17: PYTHON/ANALYTICAL SCENARIO
+--------------------------------------------------------------------------------
+
+"I give you a CSV file with 5 million pharmacy transactions. 
+Columns: transaction_id, patient_id, medicine_name, quantity, 
+amount, pharmacy_id, doctor_name, date. 
+Walk me through your first 30 minutes of analysis."
+
+POSSIBLE ANSWERS:
+
+Step 1 - Load and Explore (First 10 minutes):
+- import pandas as pd
+- df = pd.read_csv('pharmacy_data.csv')
+- df.shape (check rows and columns)
+- df.head() (see sample data)
+- df.info() (check data types)
+- df.describe() (basic statistics)
+- df.isnull().sum() (check missing values)
+- df.duplicated().sum() (check duplicates)
+
+Step 2 - Clean (Next 10 minutes):
+- Handle missing values (drop or fill)
+- Remove exact duplicates
+- Convert date column to datetime format
+- Standardize medicine names (upper/lower case issues)
+- Check for negative amounts or zero quantities
+
+Step 3 - Initial Analysis (Next 10 minutes):
+- Top 10 medicines by transaction count
+- Top 10 pharmacies by total billing amount
+- Distribution of transaction amounts (histogram)
+- Transactions per day trend (time series)
+- Top doctor-pharmacy pairs by frequency
+- Flag transactions where amount seems unusually high for the medicine
+
+BONUS if they mention:
+- df.groupby() for aggregations
+- Visualization using matplotlib or seaborn
+- Saving cleaned data for further analysis
+- Creating derived columns (month, day_of_week, amount_per_unit)
+
+WHAT TO OBSERVE: Structured approach, practical Python knowledge, 
+analytical methodology
+
+
+--------------------------------------------------------------------------------
+QUESTION 18: BUSINESS IMPACT CALCULATION
+--------------------------------------------------------------------------------
+
+"Your fraud detection model flags 10,000 claims per month. After 
+investigation, 6,000 turn out to be actual fraud (true positives) 
+and 4,000 are legitimate claims wrongly flagged (false positives). 
+Each investigation costs Rs.500. Each caught fraud saves Rs.50,000. 
+Each false positive causes a 2-day payment delay to the hospital. 
+Is this model good? How would you improve it?"
+
+POSSIBLE ANSWERS:
+
+Current Performance:
+- Precision = 6000/10000 = 60% (not great)
+- Monthly fraud caught = 6000 x Rs.50,000 = Rs.30 crore saved
+- Investigation cost = 10000 x Rs.500 = Rs.5 lakh
+- Net savings = Rs.30 crore - Rs.5 lakh = ~Rs.29.95 crore
+- BUT 4000 hospitals face delayed payments = relationship damage
+
+Assessment:
+- Financially the model is very profitable
+- But 40% false positive rate is too high
+- Hospitals getting wrongly flagged will lose trust
+- Could lead to hospitals leaving the network
+
+How to improve:
