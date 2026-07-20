@@ -1,0 +1,68 @@
+You are helping me build a POC for a hackathon idea called
+"Auto Task Assignment: Meeting Action Items to Azure DevOps Backlog"
+(theme: Enterprise-led Agentic Solutions).
+
+GOAL: Build a Python agent that turns Teams meeting transcripts into
+structured Azure DevOps (ADO) work items, with a human-in-the-loop review step.
+
+IMPORTANT: This sandbox is empty. Before building, GENERATE the test data:
+
+0. CREATE SAMPLE DATA:
+   - Generate 5 realistic Teams meeting transcripts as text files, each with
+     speakers, timestamps, and natural conversation. Vary them: a sprint
+     planning, a client status call, a bug triage, a design review, and a
+     retro. Include explicit action items ("John will fix X by Friday"),
+     implicit ones ("someone should look into Y"), and items with no clear owner.
+   - Also generate an "answer key" JSON listing the true action items per
+     transcript, so we can measure accuracy later.
+   - Generate a mock existing ADO backlog (JSON) with a few overlapping items
+     so dedupe can be demonstrated.
+
+Then build the pipeline, one module per stage:
+
+1. INGEST: Read a transcript + attendee list. Normalize speakers/timestamps
+   into a clean structured object. Handle empty or garbled transcripts safely.
+
+2. REDACT: Add a PII redaction pass (names/emails/phone numbers) before sending
+   text to the LLM. Keep a mapping so output can be re-mapped for the reviewer.
+
+3. EXTRACT: Use an LLM to pull explicit AND implicit action items. For each,
+   capture: task text, owner (if stated), due date (if any), source transcript
+   line, a confidence score, and a one-line rationale. Detect transcript
+   language and note it (multi-language ready).
+
+4. STRUCTURE: Convert each action item into an ADO-ready user story/task with
+   title, description, acceptance criteria, suggested priority, rough effort,
+   and a traceability link back to the source meeting/line.
+
+5. GROUPING: Recommend when items should roll up under a new Epic/Feature vs.
+   attach to an existing one.
+
+6. OWNER RECOMMENDATION: Suggest an owner using signals like role, attendees,
+   and past ownership patterns. Output owner + confidence + reason.
+
+7. DEDUPE: Compare against the mock backlog using EMBEDDINGS-based similarity
+   (not just string match). Flag likely duplicates with a similarity score.
+
+8. OUTPUT / INTEGRATION: Generate a JSON payload matching the ADO REST API
+   "create work item" schema. Add a dry-run mode that writes payloads to file
+   instead of calling ADO, plus a real mode using an ADO PAT from env vars.
+   Never hardcode secrets - provide a .env.example.
+
+9. HUMAN-IN-THE-LOOP: Before anything is "created", print a review table
+   (task, owner, priority, confidence, duplicate flag) for manager approval.
+
+10. FEEDBACK LOOP: Let the reviewer edit/approve/reject; log those edits to a
+    file so future runs can learn from corrections.
+
+11. METRICS: Compare extracted items against the answer key and compute real
+    precision, recall, owner-assignment accuracy, and duplicate rate. Also
+    estimate time saved per meeting so I can show measurable business impact.
+
+12. GOVERNANCE: Add an audit log of every run (input, output, who approved) and
+    a placeholder RBAC check.
+
+Requirements: modular, well-commented Python; a config file for keys/paths; a
+requirements.txt; a .env.example; and a README explaining how to run the
+dry-run demo end to end. Start by generating the sample data in step 0, show me
+one sample transcript, then continue building.
